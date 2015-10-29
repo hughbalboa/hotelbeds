@@ -1,8 +1,6 @@
-<?php
+<?php namespace StayForLong\HotelBeds;
 
-namespace StayForLong\HotelBeds;
-
-final class ServiceHotelsList
+final class ServiceLocationList
 {
 	private $response;
 
@@ -20,11 +18,11 @@ final class ServiceHotelsList
 			$response = $this->response->getBody();
 			return json_decode( $response, true);
 		} catch (ServiceRequestException $e) {
-			throw new ServiceHotelsListException($e->getMessage());
+			throw new ServiceLocationListException($e->getMessage());
 		}
 	}
 }
 
-class ServiceHotelsListException extends \ErrorException
+class ServiceLocationListException extends \ErrorException
 {
 }
