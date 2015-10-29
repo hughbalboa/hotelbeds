@@ -1,0 +1,26 @@
+{
+    "name": "stayforlong/hotelbeds",
+    "description": "To use the differents services from Hotel Beds. Compatible with version 0.2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raúl Morón",
+            "email": "raul@stayforlong.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "StayForLong\\HotelBeds\\": "src/"
+        }
+    },
+    "branch-alias": {
+        "dev-master": "dev"
+    },
+    "config": {
+        "optimize-autoloader": true
+    }
+}
