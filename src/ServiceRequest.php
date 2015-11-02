@@ -15,26 +15,31 @@ class ServiceRequest
 	private $url = "";
 
 	/**
+	 * @var string
+	 */
+	private $options = "";
+
+	/**
 	 * @var array
 	 */
 	private $params = [];
 
 	/**
 	 * @param ApiAuth $api_auth
-	 * @param $api_url
-	 * @param array $api_params
+	 * @param string $an_api_url
+	 * @param array $an_api_params
 	 */
-	public function __construct(ApiAuth $api_auth, $api_url, array $api_params)
+	public function __construct(ApiAuth $api_auth, $an_api_url, $an_api_params = [])
 	{
 		$this->api_headers = $api_auth();
-		$this->url           = $api_url;
-		$this->params        = $api_params;
+		$this->url         = $an_api_url;
+		$this->params      = $an_api_params;
 	}
 
-	public function __invoke()
+	public function send()
 	{
 		try {
-			$api_request_url = $this->getApiRequestUrl();
+			$api_request_url = $this->getRequestUrl();
 
 			$options = [
 				'headers' => [
@@ -46,7 +51,6 @@ class ServiceRequest
 			];
 
 			$client = new Client();
-
 			return $client->request(
 				"GET",
 				$api_request_url,
@@ -57,12 +61,24 @@ class ServiceRequest
 		}
 	}
 
+	public function setQueryStringParams($api_params)
+	{
+		$this->params = $api_params;
+		return $this;
+	}
+
+	public function setOptions($api_options)
+	{
+		$this->options .= $api_options . "/";
+		return $this;
+	}
+
 	/**
 	 * @return string
 	 */
-	private function getApiRequestUrl()
+	private function getRequestUrl()
 	{
-		return $this->url .= "?".http_build_query($this->params);
+		return $this->url .= $this->options . "?" . http_build_query($this->params);
 	}
 }
 

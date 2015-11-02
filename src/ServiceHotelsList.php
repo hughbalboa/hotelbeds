@@ -11,7 +11,7 @@ final class ServiceHotelsList
 	 */
 	public function __construct(ServiceRequest $request)
 	{
-		$this->response = $request();
+		$this->response = $request->setOptions("hotels")->send();
 	}
 
 	public function __invoke()
