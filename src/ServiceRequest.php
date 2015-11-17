@@ -20,6 +20,11 @@ class ServiceRequest
 	private $options = "";
 
 	/**
+	 * @var string
+	 */
+	private $body = "";
+
+	/**
 	 * @var array
 	 */
 	private $params = [];
@@ -33,15 +38,15 @@ class ServiceRequest
 	{
 		$this->api_headers = $api_auth();
 		$this->url         = $an_api_url;
-		$this->params      = $an_api_params;
+		$this->setQueryStringParams($an_api_params);
 	}
 
-	public function send()
+	public function send($method = "GET")
 	{
 		try {
 			$api_request_url = $this->getRequestUrl();
 
-			$options = [
+			$headers = [
 				'headers' => [
 					"Api-Key"     => $this->api_headers['key'],
 					"X-Signature" => $this->api_headers['signature'],
@@ -52,9 +57,10 @@ class ServiceRequest
 
 			$client = new Client();
 			return $client->request(
-				"GET",
+				$method,
 				$api_request_url,
-				$options
+				$headers,
+				$this->body
 			);
 		} catch (Exception $e) {
 			throw new ServiceRequestException($e->getMessage());
@@ -70,6 +76,12 @@ class ServiceRequest
 	public function setOptions($api_options)
 	{
 		$this->options .= $api_options . "/";
+		return $this;
+	}
+
+	public function setBody($body)
+	{
+		$this->body .= $body;
 		return $this;
 	}
 
