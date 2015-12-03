@@ -20,6 +20,11 @@ class ServiceRequest
 	private $options = "";
 
 	/**
+	 * @var array
+	 */
+	private $headers = [];
+
+	/**
 	 * @var string
 	 */
 	private $body = "";
@@ -50,21 +55,34 @@ class ServiceRequest
 				'headers' => [
 					"Api-Key"     => $this->api_headers['key'],
 					"X-Signature" => $this->api_headers['signature'],
-					"Accept"      => "application/json"
+					"Accept"      => "application/json",
+					"Content-Type" => "application/json",
+					'Accept-Encoding' => "gzip",
 				],
 				'verify'  => false
 			];
 
+			$headers = array_merge($headers, $this->headers);
+
 			$client = new Client();
-			return $client->request(
+			$response = $client->request(
 				$method,
 				$api_request_url,
 				$headers,
 				$this->body
 			);
-		} catch (Exception $e) {
+
+			return $response;
+
+		} catch (\Exception $e) {
 			throw new ServiceRequestException($e->getMessage());
 		}
+	}
+
+	public function setHeaders(array $some_headers)
+	{
+		$this->headers = array_merge($this->headers, $some_headers );
+		return $this;
 	}
 
 	public function setQueryStringParams($api_params)
@@ -83,6 +101,10 @@ class ServiceRequest
 	{
 		$this->body .= $body;
 		return $this;
+	}
+
+	public function getApiHeaders(){
+		return $this->api_headers;
 	}
 
 	/**

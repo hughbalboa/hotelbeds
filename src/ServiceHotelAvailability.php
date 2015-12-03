@@ -6,11 +6,14 @@ final class ServiceHotelAvailability
 {
 	private $response;
 
-	public function __construct(ServiceRequest $request, $hotel_code)
+	public function __construct(ServiceRequest $request, $hotels_code, $api_params)
 	{
+		$request_data = $api_params;
+		$request_data['hotels']['hotel'] = $hotels_code;
+
 		$this->response = $request->setOptions("hotels")
-			->setOptions($hotel_code)
-			->send();
+			->setHeaders(['json' => $request_data])
+			->send("POST");
 	}
 
 	public function __invoke()
