@@ -15,6 +15,11 @@ class ServiceRequest
 	private $url = "";
 
 	/**
+	 * @var int
+	 */
+	private $timeout = 1;
+
+	/**
 	 * @var string
 	 */
 	private $options = "";
@@ -36,21 +41,22 @@ class ServiceRequest
 
 	/**
 	 * @param ApiAuth $api_auth
-	 * @param string $an_api_url
+	 * @param $an_api_url
 	 * @param array $an_api_params
+	 * @param int $a_timeout
 	 */
-	public function __construct(ApiAuth $api_auth, $an_api_url, $an_api_params = [])
+	public function __construct(ApiAuth $api_auth, $an_api_url, $an_api_params = [], $a_timeout = 1)
 	{
 		$this->api_headers = $api_auth();
 		$this->url         = $an_api_url;
 		$this->setQueryStringParams($an_api_params);
+		$this->timeout     = $a_timeout;
 	}
 
 	public function send($method = "GET")
 	{
 		try {
 			$api_request_url = $this->getRequestUrl();
-
 			$headers = [
 				'headers' => [
 					"Api-Key"     => $this->api_headers['key'],
@@ -59,7 +65,8 @@ class ServiceRequest
 					"Content-Type" => "application/json",
 					'Accept-Encoding' => "gzip",
 				],
-				'verify'  => false
+				'verify'  => false,
+				'timeout' => $this->timeout,
 			];
 
 			$headers = array_merge($headers, $this->headers);
