@@ -6,26 +6,40 @@ final class ServiceHotelBooking
 {
 	private $response;
 
+	/**
+	 * @param ServiceRequest $request
+	 * @param Holder $holder
+	 * @param Rooms $rooms
+	 * @param ClientReference $client_reference
+	 * @throws ServiceRequestException
+	 */
 	public function __construct(ServiceRequest $request, Holder $holder, Rooms $rooms, ClientReference $client_reference)
 	{
-		dump($request->getApiHeaders());
-		$request_data = [
-			"holder" => $holder->getHolderData(),
-			"rooms" => $rooms->getRooms(),
-			"clientReference" => $client_reference->getComments(),
-		];
-		
-		$this->response = $request
-			->setHeaders(['json' => $request_data])
-			->setOptions("bookings")
-			->send("POST");
+		try{
+			$request_data = [
+				"holder" => $holder->getHolderData(),
+				"rooms" => $rooms->getRooms(),
+				"clientReference" => $client_reference->getComments(),
+			];
+
+			$this->response = $request
+				->setHeaders(['json' => $request_data])
+				->setOptions("bookings")
+				->send("POST");
+
+		}catch (\Exception $e){
+			dd($request->getApiHeaders(), $this->response, $e->getMessage());
+		}
 	}
 
 	public function __invoke()
 	{
 		try {
 			$response = $this->response->getBody();
-			return json_decode( $response, true);
+			$response_book = json_decode( $response, true);
+			$response_book['raw_response'] = $response;
+
+			return $response_book;
 		} catch (ServiceRequestException $e) {
 			throw new ServiceHotelBookingException($e->getMessage());
 		}
