@@ -11,7 +11,8 @@ final class ServiceHotelAvailability
 		$request_data = $api_params;
 		$request_data['hotels']['hotel'] = $hotels_code;
 
-		$this->response = $request->setOptions("hotels")
+		$this->response = $request
+			->setOptions("hotels")
 			->setHeaders(['json' => $request_data])
 			->send("POST");
 	}

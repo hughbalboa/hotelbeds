@@ -36,7 +36,8 @@ final class ServiceHotelBooking
 	{
 		try {
 			$response = $this->response->getBody();
-			$response_book = json_decode( $response, true);
+			$response = json_decode( $response, true);
+			$response_book = $response['booking'];
 			$response_book['raw_response'] = $response;
 
 			return $response_book;

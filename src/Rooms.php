@@ -59,7 +59,7 @@ class Rooms implements RoomsInterface
 	 */
 	public function setPaxes(array $some_paxes, $key_room)
 	{
-		$this->rooms_data[$key_room]['paxes'][] = $some_paxes;
+		$this->rooms_data[$key_room]['paxes'] = $some_paxes;
 		return $this;
 	}
 

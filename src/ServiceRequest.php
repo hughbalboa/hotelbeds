@@ -20,9 +20,9 @@ class ServiceRequest
 	private $timeout = 1;
 
 	/**
-	 * @var string
+	 * @var array
 	 */
-	private $options = "";
+	private $options = [];
 
 	/**
 	 * @var array
@@ -70,7 +70,7 @@ class ServiceRequest
 			];
 
 			$headers = array_merge($headers, $this->headers);
-
+;
 			$client = new Client();
 			$response = $client->request(
 				$method,
@@ -100,7 +100,7 @@ class ServiceRequest
 
 	public function setOptions($api_options)
 	{
-		$this->options .= $api_options . "/";
+		$this->options[] = $api_options;
 		return $this;
 	}
 
@@ -117,9 +117,15 @@ class ServiceRequest
 	/**
 	 * @return string
 	 */
-	private function getRequestUrl()
+	public function getRequestUrl()
 	{
-		return $this->url .= $this->options . "?" . http_build_query($this->params);
+		$url = $this->url .= implode("/", $this->options);
+
+		if(!empty($this->params)){
+			$url .= "?" . http_build_query($this->params);
+		}
+
+		return $url;
 	}
 }
 
