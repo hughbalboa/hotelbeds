@@ -1,7 +1,7 @@
 <?php namespace StayForLong\HotelBeds;
 
 
-use StayForLong\HotelBeds\Interfaces\RoomsInterface;
+use StayForLong\HotelBeds\Contracts\RoomsInterface;
 
 /**
  * Class Rooms

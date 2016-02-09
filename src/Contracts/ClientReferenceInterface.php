@@ -1,4 +1,4 @@
-<?php namespace StayForLong\HotelBeds\Interfaces;
+<?php namespace StayForLong\HotelBeds\Contracts;
 
 /**
  * Interface ClientReferenceInterface

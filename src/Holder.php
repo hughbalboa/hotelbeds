@@ -1,6 +1,7 @@
 <?php namespace StayForLong\HotelBeds;
 
-use StayForLong\HotelBeds\Interfaces\HolderInterface;
+use StayForLong\HotelBeds\Contracts\HolderInterface;
+use StayForLongApi\Utils\SearchEngine;
 
 /**
  * Class Holder
@@ -27,6 +28,15 @@ class Holder implements HolderInterface
 		$this->last_name = $a_last_name;
 		return $this;
 	}
+
+	public function getFirstName(){
+		return $this->first_name;
+	}
+
+	public function getLastName(){
+		return $this->last_name;
+	}
+
 
 	public function getHolderData()
 	{

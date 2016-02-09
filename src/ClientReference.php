@@ -9,14 +9,26 @@
 namespace StayForLong\HotelBeds;
 
 
-use StayForLong\HotelBeds\Interfaces\ClientReferenceInterface;
+use StayForLong\HotelBeds\Contracts\ClientReferenceInterface;
 
 class ClientReference implements ClientReferenceInterface {
 	private $comment;
+	private $reference;
 
-	public function setComments($a_references)
+	public function setReference($a_reference)
 	{
-		$this->comment = $a_references;
+		$this->reference = $a_reference;
+		return $this;
+	}
+
+	public function getReference()
+	{
+		return $this->reference;
+	}
+
+	public function setComments($a_comment)
+	{
+		$this->comment = $a_comment;
 		return $this;
 	}
 
